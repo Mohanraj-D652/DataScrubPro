@@ -288,15 +288,82 @@ select option { background: var(--surface); color: var(--text); }
 .dl-btn:hover { border-color: var(--accent); background: rgba(79, 70, 229, 0.1); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(79, 70, 229, 0.15); }
 .dl-btn:active { transform: translateY(0); }
 .dl-icon { font-size: 16px; }
-
 /* ═══ PREVIEW TABLE ═══ */
-.preview-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-.preview-title { padding: 12px 14px; font-size: 13px; font-weight: 600; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; color: var(--text); }
-.table-wrap { overflow-x: auto; max-height: 260px; -webkit-overflow-scrolling: touch; }
-table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: var(--sans); }
-th { background: var(--surface2); padding: 10px 12px; text-align: left; color: var(--text); font-weight: 600; white-space: nowrap; position: sticky; top: 0; z-index: 2; border-bottom: 1px solid var(--border); }
+.preview-box { 
+  background: var(--surface); 
+  border: 1px solid var(--border); 
+  border-radius: 12px; 
+  overflow: hidden; 
+  margin-bottom: 16px; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2); 
+}
+.preview-title { 
+  padding: 12px 14px; 
+  font-size: 13px; 
+  font-weight: 600; 
+  border-bottom: 1px solid var(--border); 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+  color: var(--text); 
+}
+.table-wrap { 
+  overflow-x: auto; 
+  overflow-y: auto; 
+  max-height: 260px; 
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+/* Custom scrollbars for table */
+.table-wrap::-webkit-scrollbar { 
+  width: 14px; 
+  height: 14px; 
+}
+.table-wrap::-webkit-scrollbar-track { 
+  background: var(--surface2); 
+}
+.table-wrap::-webkit-scrollbar-thumb { 
+  background: #4f46e5; 
+  border-radius: 7px; 
+  border: 3px solid var(--surface2);
+}
+.table-wrap::-webkit-scrollbar-thumb:hover { 
+  background: #4338ca; 
+}
+.table-wrap::-webkit-scrollbar-corner {
+  background: var(--surface2);
+}
+
+table { 
+  width: 100%; 
+  min-width: max-content;
+  border-collapse: collapse; 
+  font-size: 12px; 
+  font-family: var(--sans); 
+}
+th { 
+  background: var(--surface2); 
+  padding: 10px 12px; 
+  text-align: left; 
+  color: var(--text); 
+  font-weight: 600; 
+  white-space: nowrap; 
+  position: sticky; 
+  top: 0; 
+  z-index: 2; 
+  border-bottom: 1px solid var(--border); 
+}
 .col-type { margin-left: 3px; font-size: 10px; color: var(--muted); font-weight: 400; }
-td { padding: 8px 12px; border-top: 1px solid var(--border); white-space: nowrap; max-width: 140px; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+td { 
+  padding: 8px 12px; 
+  border-top: 1px solid var(--border); 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  color: var(--text); 
+}
 tr:hover td { background: rgba(79, 70, 229, 0.05); }
 
 /* ═══ SQL BOX ═══ */
@@ -884,3 +951,402 @@ tr:hover td { background: rgba(79, 70, 229, 0.05); }
   .footer-bottom p { font-size: 13px; line-height: 1.6; }
   .toast { top: 24px; right: 24px; padding: 12px 18px; font-size: 14px; }
 }
+@import "tailwindcss";
+
+/* =========================
+   ROOT VARIABLES
+========================= */
+:root {
+  --bg: #101112;
+  --surface: #1a1c1f;
+  --surface2: #242729;
+  --border: #36393f;
+
+  --accent: #4f46e5;
+  --accent2: #0ea5e9;
+  --accent3: #06b6d4;
+
+  --warn: #d97706;
+  --danger: #ef4444;
+
+  --text: #e4e6eb;
+  --muted: #9099a8;
+
+  --mono: "Monaco", "Menlo", monospace;
+  --sans: "Inter", system-ui, sans-serif;
+}
+
+/* =========================
+   RESET
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* =========================
+   SCROLLBARS
+========================= */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent), var(--accent3));
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #4338ca, #0891b2);
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px;
+}
+
+/* =========================
+   PANELS
+========================= */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+/* =========================
+   DATA PREVIEW TABLE
+========================= */
+.preview-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.preview-title {
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+/* TABLE WRAPPER = SLIDERS */
+.table-wrap {
+  max-height: 260px;
+  overflow-x: auto;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  min-width: max-content;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+/* HEADER */
+th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--surface2);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+  cursor: col-resize;
+}
+
+/* BODY */
+td {
+  padding: 8px 14px;
+  border-top: 1px solid var(--border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+/* ROW HOVER */
+tr:hover td {
+  background: rgba(79, 70, 229, 0.08);
+}
+
+/* LONG TEXT EXPAND ON HOVER */
+td:hover {
+  white-space: normal;
+  overflow: visible;
+  background: rgba(79, 70, 229, 0.12);
+}
+
+/* STICKY FIRST COLUMN (PRO FEATURE) */
+th:first-child,
+td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 6;
+  background: var(--surface2);
+  border-right: 1px solid var(--border);
+}
+
+/* COLUMN TYPE LABEL */
+.col-type {
+  font-size: 10px;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #4338ca;
+}
+
+/* =========================
+   FULL WIDTH FOOTER FIX
+========================= */
+
+.footer {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  border-radius: 0;
+}
+
+/* Keep content centered */
+.footer-content,
+.footer-bottom {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Optional: stronger footer separation */
+.footer {
+  box-shadow: inset 0 1px 0 var(--border);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 640px) {
+  table {
+    font-size: 11px;
+  }
+
+  td {
+    max-width: 140px;
+  }
+}
+
+
+/* ===============================
+   SMOOTH SCROLL TABLE (NO FIXED COLUMNS)
+=============================== */
+
+.preview-box {
+  position: relative;
+  overflow: hidden;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 320px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Table base */
+table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: var(--sans);
+}
+
+/* Header */
+th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--surface2);
+  white-space: nowrap;
+}
+
+/* Cells */
+td {
+  white-space: nowrap;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Row hover */
+tr:hover td {
+  background: rgba(79, 70, 229, 0.06);
+}
+
+/* Smooth modern scrollbar */
+.table-wrap::-webkit-scrollbar {
+  height: 10px;
+}
+
+.table-wrap::-webkit-scrollbar-track {
+  background: var(--surface2);
+  border-radius: 10px;
+}
+
+.table-wrap::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    90deg,
+    var(--accent),
+    var(--accent3)
+  );
+  border-radius: 10px;
+}
+
+.table-wrap::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    90deg,
+    #4338ca,
+    #0891b2
+  );
+}
+/* ===============================
+   FIX TABLE SHIFT ON SCROLL + SELECTION
+=============================== */
+
+/* Prevent accidental text dragging while scrolling */
+.table-wrap {
+  user-select: none;
+  cursor: grab;
+}
+
+.table-wrap:active {
+  cursor: grabbing;
+}
+
+/* Re-enable selection only when explicitly selecting text */
+table td,
+table th {
+  user-select: text;
+}
+
+/* Prevent layout jump on selection */
+table {
+  table-layout: fixed;
+}
+
+/* Prevent cell repaint glitches */
+td, th {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Smooth scrolling without repaint jump */
+.table-wrap {
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+/* Row highlight stays stable */
+tr:hover td {
+  background: rgba(79, 70, 229, 0.06);
+}
+
+/* Selected row highlight (no shift) */
+tr:has(td:focus),
+tr.selected td {
+  background: rgba(79, 70, 229, 0.12);
+}
+/* ===============================
+   FORCE ALL COLUMNS TO SCROLL
+=============================== */
+
+/* Disable sticky behavior everywhere */
+table th,
+table td {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  z-index: auto !important;
+}
+
+/* Ensure table scrolls as one unit */
+.table-wrap {
+  overflow-x: auto;
+  overflow-y: auto;
+  user-select: none;
+  scroll-behavior: smooth;
+}
+
+/* Prevent jump while scrolling + selecting */
+table {
+  table-layout: fixed;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* Cells stay stable while scrolling */
+td, th {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  white-space: nowrap;
+}
+
+/* Enable text selection only inside cells */
+table td,
+table th {
+  user-select: text;
+}
+
+/* Smooth hover (no detach effect) */
+tr:hover td {
+  background: rgba(79, 70, 229, 0.06);
+}
+
