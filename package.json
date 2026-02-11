@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build-vercel": "chmod +x ./node_modules/.bin/vite 2>/dev/null || true && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
